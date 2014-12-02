@@ -17,7 +17,7 @@ using System.Windows.Forms;
 namespace SensorGUI
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for MainWindow.xaml Subtle
     /// </summary>
     /// 
     public partial class MainWindow : Window
