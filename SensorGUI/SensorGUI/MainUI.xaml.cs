@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Forms;
+using Phidgets; //Needed for the RFID class and the PhidgetException class
+using Phidgets.Events; //Needed for the phidget event handling classes
 
 namespace SensorGUI
 {
@@ -23,6 +25,8 @@ namespace SensorGUI
     public partial class MainWindow : Window
     {
         private int isConnected;
+        private RFID rfid; //Declare an RFID object
+        private ErrorEventBox errorBox;
         enum States
         {
             DISCONNECTED = 0,
@@ -31,17 +35,22 @@ namespace SensorGUI
         };
 
         
-
-
         public MainWindow()
         {
             InitializeComponent();
+            Initialization();
         }
 
         public int Initialization()
         {
-            isConnected = (int)States.DISCONNECTED;
+            errorBox = new ErrorEventBox();
+            isConnected = (int)States.CONNECTED;
             return 0;
+        }
+
+        private void On_Loaded()
+        {
+            updateStatus();
         }
 
         public void updateStatus()
@@ -94,6 +103,55 @@ namespace SensorGUI
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             System.Windows.Forms.MessageBox.Show("Please bring sensor in close proximity to the scanner", "Scanning...", MessageBoxButtons.OK);
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            updateStatus();
+            rfid = new RFID();
+            rfid.Attach += new AttachEventHandler(rfid_Attach);
+            rfid.Detach += new DetachEventHandler(rfid_Detach);
+            rfid.Error += new ErrorEventHandler(rfid_Error);
+
+            rfid.Tag += new TagEventHandler(rfid_Tag);
+            rfid.TagLost += new TagEventHandler(rfid_TagLost);
+
+        }
+
+        void rfid_Attach(object sender, AttachEventArgs e)
+        {
+            RFID attached = (RFID)sender;
+            Reader_Information.Text += attached.Attached.ToString();
+            Reader_Information.Text += "\nName: " + attached.Name;
+            isConnected = (int)States.CONNECTED;
+        }
+
+        void rfid_Detach(object sender, DetachEventArgs e)
+        {
+            RFID detached = (RFID)sender;
+            Reader_Information.Text = String.Empty;
+            isConnected = (int)States.DISCONNECTED;
+        }
+
+        void rfid_Error(object sender, ErrorEventArgs e)
+        {
+            Phidget phid = (Phidget)sender;
+            switch (e.Type)
+            {
+                case PhidgetException.ErrorType.PHIDGET_ERR_BADPASSWORD:
+                    phid.close();
+                    break;
+                default:
+                    if (!errorBox.Visible)
+                        errorBox.Show();
+                    break;
+            }
+            errorBox.addMessage(DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : " + e.Description);
+        }
+
+        void rfid_Tag(object sender, TagEventArgs e)
+        {
+            
         }
 
         

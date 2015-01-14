@@ -1,12 +1,12 @@
 ﻿<Window x:Class="SensorGUI.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="400" Width="800">
+        Title="MainWindow" Height="400" Width="800" Loaded="Window_Loaded">
     <Grid Background="#FF1C1C1C">
         <Label x:Name="StatusLabel" Content="Status: " HorizontalAlignment="Left" Margin="556,26,0,0" VerticalAlignment="Top" Width="127" FontSize="36" FontWeight="Bold" Foreground="White"  />
         <Ellipse x:Name="StatusON" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="24" Margin="688,47,0,0" Stroke="Black" VerticalAlignment="Top" Width="25"/>
         <Ellipse x:Name="StatusOFF" Fill="#FFCD0000" HorizontalAlignment="Left" Height="24" Margin="718,47,0,0" Stroke="Black" VerticalAlignment="Top" Width="25"/>
-        <Button x:Name="SimulateButton" Content="Simulate Change" HorizontalAlignment="Left" Margin="605,311,0,0" VerticalAlignment="Top" Width="177" Height="49" FontSize="20" Click="SimulateButton_Click">
+        <Button x:Name="SimulateButton" Content="Simulate Change" HorizontalAlignment="Left" Margin="605,311,0,0" VerticalAlignment="Top" Width="177" Height="49" FontSize="20" Click="SimulateButton_Click" ToolTip="Click to establish a connection to the reader.">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
                     <GradientStop Color="#FFF3F3F3" Offset="0"/>
@@ -26,5 +26,7 @@
                 </LinearGradientBrush>
             </Button.Background>
         </Button>
+        <TextBlock x:Name="Reader_Information" HorizontalAlignment="Left" Margin="10,248,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="111" Width="182">
+        </TextBlock>
     </Grid>
 </Window>
