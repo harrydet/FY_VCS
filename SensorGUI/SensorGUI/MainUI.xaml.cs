@@ -124,6 +124,7 @@ namespace SensorGUI
             Reader_Information.Text += attached.Attached.ToString();
             Reader_Information.Text += "\nName: " + attached.Name;
             isConnected = (int)States.CONNECTED;
+            updateStatus();
         }
 
         void rfid_Detach(object sender, DetachEventArgs e)
@@ -131,6 +132,7 @@ namespace SensorGUI
             RFID detached = (RFID)sender;
             Reader_Information.Text = String.Empty;
             isConnected = (int)States.DISCONNECTED;
+            updateStatus();
         }
 
         void rfid_Error(object sender, ErrorEventArgs e)
@@ -151,7 +153,23 @@ namespace SensorGUI
 
         void rfid_Tag(object sender, TagEventArgs e)
         {
-            
+            Tag_Information.Text = "Tag Code: " + e.Tag;
+            Tag_Information.Text += "\nProtocol:" + e.protocol.ToString();
+        }
+
+        void rfid_TagLost(object sender, TagEventArgs e)
+        {
+            Tag_Information.Text = "";
+        }
+
+        private void Window_Unloaded(object sender, RoutedEventArgs e)
+        {
+            rfid.Attach -= new AttachEventHandler(rfid_Attach);
+            rfid.Detach -= new DetachEventHandler(rfid_Detach);
+            rfid.Tag -= new TagEventHandler(rfid_Tag);
+            rfid.TagLost -= new TagEventHandler(rfid_TagLost);
+
+            rfid.close();
         }
 
         
