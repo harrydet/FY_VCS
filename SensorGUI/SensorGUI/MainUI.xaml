@@ -3,10 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow" Height="400" Width="800" Loaded="Window_Loaded" Unloaded="Window_Unloaded">
     <Grid Background="#FF1C1C1C">
-        <Label x:Name="StatusLabel" Content="Status: " HorizontalAlignment="Left" Margin="556,26,0,0" VerticalAlignment="Top" Width="127" FontSize="36" FontWeight="Bold" Foreground="White"  />
-        <Ellipse x:Name="StatusON" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="24" Margin="688,47,0,0" Stroke="Black" VerticalAlignment="Top" Width="25"/>
-        <Ellipse x:Name="StatusOFF" Fill="#FFCD0000" HorizontalAlignment="Left" Height="24" Margin="718,47,0,0" Stroke="Black" VerticalAlignment="Top" Width="25"/>
-        <Button x:Name="SimulateButton" Content="Simulate Change" HorizontalAlignment="Left" Margin="605,311,0,0" VerticalAlignment="Top" Width="177" Height="49" FontSize="20" Click="SimulateButton_Click" ToolTip="Click to establish a connection to the reader.">
+        <Label x:Name="StatusLabel" Content="Status: " HorizontalAlignment="Left" Margin="556,26,0,0" VerticalAlignment="Top" Width="127" FontSize="36" Foreground="White"  />
+        <Ellipse x:Name="statusReader" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="24" Margin="688,47,0,0" Stroke="Black" VerticalAlignment="Top" Width="25"/>
+        <Ellipse x:Name="statusTag" Fill="#FFCD0000" HorizontalAlignment="Left" Height="24" Margin="718,47,0,0" Stroke="Black" VerticalAlignment="Top" Width="25"/>
+        <Button x:Name="Submit_Tag_Button" Content="Submit Tag" HorizontalAlignment="Left" Margin="605,311,0,0" VerticalAlignment="Top" Width="177" Height="49" FontSize="20" Click="SubmitButton_Click" ToolTip="Click to associate the tag information with the client.">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
                     <GradientStop Color="#FFF3F3F3" Offset="0"/>
@@ -26,7 +26,19 @@
                 </LinearGradientBrush>
             </Button.Background>
         </Button>
-        <TextBlock x:Name="Reader_Information" HorizontalAlignment="Left" Margin="10,248,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="111" Width="182" FontSize="15" FontFamily="Times New Roman" FontWeight="Bold" Foreground="White" Text="RFID Reader Information"/>
-        <TextBlock x:Name="Tag_Information" HorizontalAlignment="Left" Margin="320,143,0,0" TextWrapping="Wrap" Text="Tag Data" VerticalAlignment="Top" Height="77" Width="163" Foreground="White" FontFamily="Times New Roman" FontSize="15" FontWeight="Bold"/>
+        <Border BorderThickness="1" BorderBrush="WhiteSmoke" Margin="3,240,501,3" Opacity="0.7" CornerRadius="5">
+            <Border.Effect>
+                <DropShadowEffect/>
+            </Border.Effect>
+        </Border>
+        <TextBlock x:Name="Reader_Information" HorizontalAlignment="Left" Margin="10,248,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="113" Width="271" FontSize="15" Foreground="White" RenderTransformOrigin="0.5,0.5" Padding="5"/>
+        <Label x:Name="ReaderInfoLabel" Content="RFID Reader Information" HorizontalAlignment="Left" Margin="5,209,0,0" VerticalAlignment="Top" Width="219" Foreground="#FF64C0D4" FontSize="20"/>
+        <Label x:Name="TagInfoLabel1" Content="RFID Reader Information" HorizontalAlignment="Left" Margin="298,209,0,0" VerticalAlignment="Top" Width="219" Foreground="#FF64C0D4" FontSize="20"/>
+        <Border BorderThickness="1" BorderBrush="WhiteSmoke" Margin="294,240,210,4" Opacity="0.7" CornerRadius="5">
+            <Border.Effect>
+                <DropShadowEffect/>
+            </Border.Effect>
+        </Border>
+        <TextBlock x:Name="Tag_Information" HorizontalAlignment="Left" Margin="303,248,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="113" Width="271" FontSize="15" Foreground="White" RenderTransformOrigin="0.5,0.5" Padding="5"/>
     </Grid>
 </Window>
