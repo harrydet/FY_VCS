@@ -14,7 +14,9 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Forms;
 using Phidgets; //Needed for the RFID class and the PhidgetException class
-using Phidgets.Events; //Needed for the phidget event handling classes
+using Phidgets.Events;
+using System.Net.Http;
+using System.Data; //Needed for the phidget event handling classes
 
 namespace SensorGUI
 {
@@ -104,10 +106,22 @@ namespace SensorGUI
             tagBrush = null;
         }
 
-        private void SubmitButton_Click(object sender, RoutedEventArgs e)
+        private async void SubmitButton_Click(object sender, RoutedEventArgs e)
         {
+            using (var client = new HttpClient())
+            {
+                var values = new List<KeyValuePair<string, string>>();
+                values.Add(new KeyValuePair<string, string>("first_name", "namefromc"));
+                values.Add(new KeyValuePair<string, string>("last_name", "lastnamefromc"));
+                
+                var content = new FormUrlEncodedContent(values);
 
-            updateStatus();
+                var response = await client.PostAsync("http://178.62.34.201/phpDatabase/db_createTagEntry.php", content);
+
+                var responseString = await response.Content.ReadAsStringAsync();
+                Request_Status_Info.Text = responseString;
+                System.Windows.MessageBox.Show(responseString);
+            }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -184,13 +198,39 @@ namespace SensorGUI
 
         void rfid_Tag(object sender, TagEventArgs e)
         {
-            Tag_Information.Text = "Tag Code: " + e.Tag;
-            Tag_Information.Text += "\nProtocol:" + e.protocol.ToString();
+            try
+            {
+                Dispatcher.Invoke(new Action(() =>
+                {
+                    Tag_Information.Text = "Tag Code: " + e.Tag;
+                    Tag_Information.Text += "\nProtocol: " + e.protocol.ToString();
+                    isConnectedTag = (int)Reader_States.CONNECTED;
+                    updateStatus();
+                    Submit_Tag_Button.IsEnabled = true;
+                }));
+            }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show(ex.ToString());
+            }
         }
 
         void rfid_TagLost(object sender, TagEventArgs e)
         {
-            Tag_Information.Text = "";
+            try
+            {
+                Dispatcher.Invoke(new Action(() =>
+                {
+                    Tag_Information.Text = "";
+                    isConnectedTag = (int)Reader_States.DISCONNECTED;
+                    updateStatus();
+                    Submit_Tag_Button.IsEnabled = false;
+                }));
+            }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show(ex.ToString());
+            }
         }
 
         private void Window_Unloaded(object sender, RoutedEventArgs e)
