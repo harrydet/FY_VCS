@@ -6,7 +6,7 @@
         <Label x:Name="StatusLabel" Content="Status: " HorizontalAlignment="Left" Margin="556,26,0,0" VerticalAlignment="Top" Width="127" FontSize="36" Foreground="White"  />
         <Ellipse x:Name="statusReader" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="24" Margin="688,47,0,0" Stroke="Black" VerticalAlignment="Top" Width="25"/>
         <Ellipse x:Name="statusTag" Fill="#FFCD0000" HorizontalAlignment="Left" Height="24" Margin="718,47,0,0" Stroke="Black" VerticalAlignment="Top" Width="25"/>
-        <Button x:Name="Submit_Tag_Button" IsEnabled="False" Content="Submit Tag" HorizontalAlignment="Left" Margin="599,307,0,0" VerticalAlignment="Top" Width="177" Height="49" FontSize="20" Click="SubmitButton_Click" ToolTip="Click to associate the tag information with the client.">
+        <Button x:Name="Submit_Tag_Button" IsEnabled="False" Content="Submit Tag" HorizontalAlignment="Left" Margin="599,249,0,0" VerticalAlignment="Top" Width="177" Height="49" FontSize="20" Click="SubmitButton_Click" ToolTip="Click to associate the tag information with the client.">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
                     <GradientStop Color="#FFF3F3F3" Offset="0"/>
@@ -22,7 +22,7 @@
             </Border.Effect>
         </Border>
         <TextBlock x:Name="Reader_Information" HorizontalAlignment="Left" Margin="10,248,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="113" Width="271" FontSize="15" Foreground="White" RenderTransformOrigin="0.5,0.5" Padding="5"/>
-        <Label x:Name="ReaderInfoLabel" Content="RFID Reader Information" HorizontalAlignment="Left" Margin="5,209,0,0" VerticalAlignment="Top" Width="219" Foreground="#FF64C0D4" FontSize="20"/>
+        <Label x:Name="ReaderInfoLabel" Content="RFID Reader Information" HorizontalAlignment="Left" Margin="5,209,0,0" VerticalAlignment="Top" Width="238" Foreground="#FF64C0D4" FontSize="20"/>
         <Label x:Name="TagInfoLabel1" Content="RFID Tag Information" HorizontalAlignment="Left" Margin="298,209,0,0" VerticalAlignment="Top" Width="219" Foreground="#FF64C0D4" FontSize="20"/>
         <Border BorderThickness="1" BorderBrush="WhiteSmoke" Margin="294,240,210,4" Opacity="0.7" CornerRadius="5">
             <Border.Effect>
@@ -31,5 +31,25 @@
         </Border>
         <TextBlock x:Name="Tag_Information" HorizontalAlignment="Left" Margin="303,248,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="113" Width="271" FontSize="15" Foreground="White" RenderTransformOrigin="0.5,0.5" Padding="5"/>
         <TextBlock x:Name="Request_Status_Info" HorizontalAlignment="Left" Margin="314,9,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="113" Width="271" FontSize="15" Foreground="White" RenderTransformOrigin="0.5,0.5" Padding="5"/>
+        <TextBox x:Name="First_Name_Text_Box" HorizontalAlignment="Left" Height="23" Margin="29,50,0,0" TextWrapping="Wrap" Text="Enter first name..." VerticalAlignment="Top" Width="159" Foreground="#FF646060" GotFocus="First_Name_Text_Box_GotFocus" LostFocus="First_Name_Text_Box_LostFocus"/>
+        <TextBox x:Name="Last_Name_Text_Box" HorizontalAlignment="Left" Height="23" Margin="211,50,0,0" TextWrapping="Wrap" Text="Enter last name..." VerticalAlignment="Top" Width="159" Foreground="#FF646060" GotFocus="Last_Name_Text_Box_GotFocus" LostFocus="Last_Name_Text_Box_LostFocus"/>
+        <Label Content="First Name: " HorizontalAlignment="Left" Margin="28,22,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14" Padding="0,5,5,5"/>
+        <Label Content="Last Time: " HorizontalAlignment="Left" Margin="210,22,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14" Padding="0,5,5,5"/>
+        <TextBox x:Name="Passport_Number_Text_Box" HorizontalAlignment="Left" Height="23" Margin="29,110,0,0" TextWrapping="Wrap" Text="Enter passport number... " VerticalAlignment="Top" Width="159" Foreground="#FF646060" GotFocus="Passport_Number_Text_Box_GotFocus" LostFocus="Passport_Number_Text_Box_LostFocus"/>
+        <Label Content="Passport Number: " HorizontalAlignment="Left" Margin="28,80,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14" Padding="0,5,5,5"/>
+        <Label Content="Date Of Birth: " HorizontalAlignment="Left" Margin="210,80,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14" Padding="0,5,5,5"/>
+        <ComboBox x:Name="Day_Combo_Box" HorizontalAlignment="Left" Margin="210,110,0,0" VerticalAlignment="Top" Width="44" SelectedIndex="0"/>
+        <ComboBox x:Name="Month_Combo_Box" HorizontalAlignment="Left" Margin="261,110,0,0" VerticalAlignment="Top" Width="44" SelectedIndex="0" SelectionChanged="Month_Combo_Box_SelectionChanged"/>
+        <ComboBox x:Name="Year_Combo_Box" HorizontalAlignment="Left" Margin="312,110,0,0" VerticalAlignment="Top" Width="63" SelectedIndex="100"/>
+        <Button x:Name="Clear_Tag_Button" Content="Clear Tag" HorizontalAlignment="Left" Margin="599,311,0,0" VerticalAlignment="Top" Width="177" Height="49" FontSize="20" Click="Clear_Tag_Button_Click" ToolTip="Click to associate the tag information with the client.">
+            <Button.Background>
+                <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                    <GradientStop Color="#FFF3F3F3" Offset="0"/>
+                    <GradientStop Color="#FFEBEBEB" Offset="0.5"/>
+                    <GradientStop Color="#FFDDDDDD" Offset="0.5"/>
+                    <GradientStop Color="#FFABABAB" Offset="1"/>
+                </LinearGradientBrush>
+            </Button.Background>
+        </Button>
     </Grid>
 </Window>

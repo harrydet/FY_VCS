@@ -30,6 +30,8 @@ namespace SensorGUI
         private int isConnectedTag;
         private RFID rfid; //Declare an RFID object
         private ErrorEventBox errorBox;
+        private TagEventArgs tag;
+        private RFID reader;
         enum Reader_States
         {
             DISCONNECTED = 0,
@@ -54,12 +56,36 @@ namespace SensorGUI
         {
             errorBox = new ErrorEventBox();
             isConnectedReader = (int)Reader_States.DISCONNECTED;
+            Populate_Day_Combo_Box(31);
+            Populate_Month_Year_Combo_Box();
             return 0;
         }
 
         private void On_Loaded()
         {
             updateStatus();
+        }
+
+        private void Populate_Day_Combo_Box(int days)
+        {
+            Day_Combo_Box.Items.Clear();
+            for (int i = 0; i < days; i++)
+            {
+                Day_Combo_Box.Items.Add(i+1);
+            }
+            Day_Combo_Box.SelectedIndex = 0;
+        }
+
+        private void Populate_Month_Year_Combo_Box()
+        {
+            for (int i = 0; i < 12; i++)
+            {
+                Month_Combo_Box.Items.Add(i + 1);
+            }
+            for (int i = 0; i < 116; i++)
+            {
+                Year_Combo_Box.Items.Add(i + 1900);
+            }
         }
 
         public void updateStatus()
@@ -110,10 +136,16 @@ namespace SensorGUI
         {
             using (var client = new HttpClient())
             {
+                var date = Year_Combo_Box.SelectedItem.ToString() + "/" + Month_Combo_Box.SelectedItem.ToString() + "/" + Day_Combo_Box.SelectedItem.ToString();
                 var values = new List<KeyValuePair<string, string>>();
-                values.Add(new KeyValuePair<string, string>("first_name", "namefromc"));
-                values.Add(new KeyValuePair<string, string>("last_name", "lastnamefromc"));
+                values.Add(new KeyValuePair<string, string>("first_name", First_Name_Text_Box.Text));
+                values.Add(new KeyValuePair<string, string>("last_name", Last_Name_Text_Box.Text));
+                values.Add(new KeyValuePair<string, string>("passport_number", Passport_Number_Text_Box.Text));
+                values.Add(new KeyValuePair<string, string>("date_of_birth", date));
                 
+                values.Add(new KeyValuePair<string, string>("tag_code", tag.Tag));
+                values.Add(new KeyValuePair<string, string>("tag_protocol", tag.protocol.ToString()));
+                values.Add(new KeyValuePair<string, string>("last_read", reader.SerialNumber.ToString()));
                 var content = new FormUrlEncodedContent(values);
 
                 var response = await client.PostAsync("http://178.62.34.201/phpDatabase/db_createTagEntry.php", content);
@@ -146,12 +178,12 @@ namespace SensorGUI
 
         void rfid_Attach(object sender, AttachEventArgs e)
         {
-            RFID attached = (RFID)sender;
+            reader = (RFID)sender;
             try
             {
                 Dispatcher.Invoke(new Action(() =>
                 {
-                    Reader_Information.Text = "Name: " + attached.Name;
+                    Reader_Information.Text = "Name: " + reader.Name.ToString() + "\nSerial Number: " + reader.SerialNumber.ToString();
                     isConnectedReader = (int)Reader_States.CONNECTING;
                     updateStatus();
                 }));
@@ -198,6 +230,7 @@ namespace SensorGUI
 
         void rfid_Tag(object sender, TagEventArgs e)
         {
+            tag = e;
             try
             {
                 Dispatcher.Invoke(new Action(() =>
@@ -221,10 +254,8 @@ namespace SensorGUI
             {
                 Dispatcher.Invoke(new Action(() =>
                 {
-                    Tag_Information.Text = "";
                     isConnectedTag = (int)Reader_States.DISCONNECTED;
                     updateStatus();
-                    Submit_Tag_Button.IsEnabled = false;
                 }));
             }
             catch (Exception ex)
@@ -325,6 +356,83 @@ namespace SensorGUI
             System.Windows.Application.Current.Shutdown();
         }
         #endregion
+
+        private void Month_Combo_Box_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Dispatcher.Invoke(new Action(() =>
+            {
+                var item = Month_Combo_Box.SelectedItem.ToString();
+                if (item.Equals("1") || item.Equals("3") || item.Equals("5") || item.Equals("7") || item.Equals("8") || item.Equals("10") || item.Equals("12"))
+                {
+                    Populate_Day_Combo_Box(31);
+                }
+                else
+                {
+                    Populate_Day_Combo_Box(30);
+                }
+            }));
+        }
+
+        private void First_Name_Text_Box_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (First_Name_Text_Box.Text.Equals("Enter first name...") || First_Name_Text_Box.Text.Equals(""))
+            {
+                First_Name_Text_Box.Text = "";
+                First_Name_Text_Box.Foreground = Brushes.Black;
+            }
+        }
+
+        private void Last_Name_Text_Box_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (Last_Name_Text_Box.Text.Equals("Enter last name...") || Last_Name_Text_Box.Text.Equals(""))
+            {
+                Last_Name_Text_Box.Text = "";
+                Last_Name_Text_Box.Foreground = Brushes.Black;
+            }
+        }
+
+        private void First_Name_Text_Box_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (First_Name_Text_Box.Text.Equals(""))
+            {
+                First_Name_Text_Box.Foreground = Brushes.Gray;
+                First_Name_Text_Box.Text = "Enter first name...";
+            }
+        }
+
+        private void Last_Name_Text_Box_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (Last_Name_Text_Box.Text.Equals(""))
+            {
+                Last_Name_Text_Box.Foreground = Brushes.Gray;
+                Last_Name_Text_Box.Text = "Enter last name...";
+            }
+        }
+
+        private void Passport_Number_Text_Box_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (Passport_Number_Text_Box.Text.Equals("Enter passport number... ") || Passport_Number_Text_Box.Text.Equals(""))
+            {
+                Passport_Number_Text_Box.Text = "";
+                Passport_Number_Text_Box.Foreground = Brushes.Black;
+            }
+        }
+
+        private void Passport_Number_Text_Box_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (Passport_Number_Text_Box.Text.Equals(""))
+            {
+                Passport_Number_Text_Box.Foreground = Brushes.Gray;
+                Passport_Number_Text_Box.Text = "Enter passport number... ";
+            }
+        }
+
+        private void Clear_Tag_Button_Click(object sender, RoutedEventArgs e)
+        {
+            Tag_Information.Text = "";
+            Submit_Tag_Button.IsEnabled = false;
+            tag = null;   
+        }
 
 
     }

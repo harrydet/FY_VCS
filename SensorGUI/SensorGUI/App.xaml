@@ -4,6 +4,8 @@
              DispatcherUnhandledException="Application_DispatcherUnhandledException"
              Startup="Application_Startup">
     <Application.Resources>
-         
+
+        <Color x:Key="Default_Text_Color">#FF646060</Color>
+
     </Application.Resources>
 </Application>
