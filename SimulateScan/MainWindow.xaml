@@ -1,0 +1,10 @@
+﻿<Window x:Class="SimulateScan.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="350" Width="525" Loaded="Window_Loaded">
+    <Grid Background="#FF1C1C1C">
+        <TextBlock x:Name="Title_Text" HorizontalAlignment="Left" Margin="82,66,0,0" TextWrapping="Wrap" Text="Bring tag close to sensor to simulate scan" VerticalAlignment="Top" Height="58" Width="371" Foreground="White" FontSize="18"/>
+        <TextBlock x:Name="Request_Text" HorizontalAlignment="Left" Margin="77,203,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="58" Width="371" Foreground="White" FontSize="18"/>
+
+    </Grid>
+</Window>
