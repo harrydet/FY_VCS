@@ -51,5 +51,16 @@
                 </LinearGradientBrush>
             </Button.Background>
         </Button>
+        <Button x:Name="Write_Button" IsEnabled="True" Content="Write ID" HorizontalAlignment="Left" Margin="667,133,0,0" VerticalAlignment="Top" Width="110" Height="33" FontSize="20" Click="Write_Button_Click" ToolTip="Click to associate the tag information with the client.">
+            <Button.Background>
+                <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                    <GradientStop Color="#FFF3F3F3" Offset="0"/>
+                    <GradientStop Color="#FFEBEBEB" Offset="0.5"/>
+                    <GradientStop Color="#FFDDDDDD" Offset="0.5"/>
+                    <GradientStop Color="#FFABABAB" Offset="1"/>
+                </LinearGradientBrush>
+            </Button.Background>
+        </Button>
+        <TextBox x:Name="ID_Box" HorizontalAlignment="Left" Height="23" Margin="496,138,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="159" Foreground="Black"/>
     </Grid>
 </Window>

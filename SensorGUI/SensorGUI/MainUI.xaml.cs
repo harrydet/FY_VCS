@@ -230,6 +230,7 @@ namespace SensorGUI
 
         void rfid_Tag(object sender, TagEventArgs e)
         {
+
             tag = e;
             try
             {
@@ -238,6 +239,7 @@ namespace SensorGUI
                     Tag_Information.Text = "Tag Code: " + e.Tag;
                     Tag_Information.Text += "\nProtocol: " + e.protocol.ToString();
                     isConnectedTag = (int)Reader_States.CONNECTED;
+                    ID_Box.Text = e.Tag;
                     updateStatus();
                     Submit_Tag_Button.IsEnabled = true;
                 }));
@@ -256,6 +258,7 @@ namespace SensorGUI
                 {
                     isConnectedTag = (int)Reader_States.DISCONNECTED;
                     updateStatus();
+                    ID_Box.Text = "";
                 }));
             }
             catch (Exception ex)
@@ -432,6 +435,19 @@ namespace SensorGUI
             Tag_Information.Text = "";
             Submit_Tag_Button.IsEnabled = false;
             tag = null;   
+        }
+
+        private void Write_Button_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                RFID.RFIDTagProtocol proto = RFID.RFIDTagProtocol.PHIDGETS;
+                rfid.write(ID_Box.Text, proto, false);
+            }
+            catch (PhidgetException ex)
+            {
+                System.Windows.MessageBox.Show("Error writing tag: " + ex.Message);
+            }
         }
 
 

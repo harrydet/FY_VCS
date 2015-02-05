@@ -126,6 +126,7 @@ namespace SimulateScan
             {
                 var values = new List<KeyValuePair<string, string>>();
                 values.Add(new KeyValuePair<string, string>("tag_code", tag.Tag));
+                values.Add(new KeyValuePair<string, string>("reader_serial", reader.SerialNumber.ToString()));
                 var content = new FormUrlEncodedContent(values);
 
                 var response = await client.PostAsync("http://178.62.34.201/phpTagResponse/respondWithPush.php", content);
