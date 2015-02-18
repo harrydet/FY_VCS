@@ -143,7 +143,33 @@ namespace SimulateScan
                 {
                     System.Windows.MessageBox.Show(ex.ToString());
                 }
-                System.Windows.MessageBox.Show(responseString);
+                System.Windows.MessageBox.Show("Push sent successfully.");
+            }
+        }
+        private async void sendPostRequest(String tag, String serialNumber)
+        {
+            using (var client = new HttpClient())
+            {
+                var values = new List<KeyValuePair<string, string>>();
+                values.Add(new KeyValuePair<string, string>("tag_code", tag));
+                values.Add(new KeyValuePair<string, string>("reader_serial", serialNumber));
+                var content = new FormUrlEncodedContent(values);
+
+                var response = await client.PostAsync("http://178.62.34.201/phpTagResponse/respondWithPush.php", content);
+
+                var responseString = await response.Content.ReadAsStringAsync();
+                try
+                {
+                    Dispatcher.Invoke(new Action(() =>
+                    {
+                        Request_Text.Text = "Request sent with code: " + tag;
+                    }));
+                }
+                catch (Exception ex)
+                {
+                    System.Windows.MessageBox.Show(ex.ToString());
+                }
+                System.Windows.MessageBox.Show("Push sent successfully.");
             }
         }
 
@@ -230,5 +256,10 @@ namespace SimulateScan
             System.Windows.Application.Current.Shutdown();
         }
         #endregion
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            sendPostRequest(fakeTagId.Text, "335393");
+        }
     }
 }

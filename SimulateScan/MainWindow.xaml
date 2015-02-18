@@ -5,6 +5,8 @@
     <Grid Background="#FF1C1C1C">
         <TextBlock x:Name="Title_Text" HorizontalAlignment="Left" Margin="82,66,0,0" TextWrapping="Wrap" Text="Bring tag close to sensor to simulate scan" VerticalAlignment="Top" Height="58" Width="371" Foreground="White" FontSize="18"/>
         <TextBlock x:Name="Request_Text" HorizontalAlignment="Left" Margin="77,203,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="58" Width="371" Foreground="White" FontSize="18"/>
+        <Button x:Name="OtherReaderButon" Content="Simulate Different Reader" HorizontalAlignment="Left" Margin="342,26,0,0" VerticalAlignment="Top" Width="143" Click="Button_Click"/>
+        <TextBox x:Name="fakeTagId" HorizontalAlignment="Left" Height="23" Margin="215,25,0,0" TextWrapping="Wrap" Text="Enter tag ID" VerticalAlignment="Top" Width="120"/>
 
     </Grid>
 </Window>
