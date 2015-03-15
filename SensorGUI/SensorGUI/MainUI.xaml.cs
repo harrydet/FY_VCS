@@ -17,6 +17,8 @@ using Phidgets; //Needed for the RFID class and the PhidgetException class
 using Phidgets.Events;
 using System.Net.Http;
 using System.Data; //Needed for the phidget event handling classes
+using Newtonsoft.Json.Linq;
+
 
 namespace SensorGUI
 {
@@ -138,21 +140,44 @@ namespace SensorGUI
             {
                 var date = Year_Combo_Box.SelectedItem.ToString() + "/" + Month_Combo_Box.SelectedItem.ToString() + "/" + Day_Combo_Box.SelectedItem.ToString();
                 var values = new List<KeyValuePair<string, string>>();
-                values.Add(new KeyValuePair<string, string>("first_name", First_Name_Text_Box.Text));
-                values.Add(new KeyValuePair<string, string>("last_name", Last_Name_Text_Box.Text));
-                values.Add(new KeyValuePair<string, string>("passport_number", Passport_Number_Text_Box.Text));
+                values.Add(new KeyValuePair<string, string>("first_name", First_Name_Text_Box.Text.Replace(" ", "")));
+                values.Add(new KeyValuePair<string, string>("last_name", Last_Name_Text_Box.Text.Replace(" ", "")));
+                values.Add(new KeyValuePair<string, string>("passport_number", Passport_Number_Text_Box.Text.Replace(" ", "")));
                 values.Add(new KeyValuePair<string, string>("date_of_birth", date));
                 
                 values.Add(new KeyValuePair<string, string>("tag_code", tag.Tag));
-                values.Add(new KeyValuePair<string, string>("tag_protocol", tag.protocol.ToString()));
-                values.Add(new KeyValuePair<string, string>("last_read", reader.SerialNumber.ToString()));
+                values.Add(new KeyValuePair<string, string>("tag_protocol", tag.protocol.ToString().Replace(" ", "")));
+                values.Add(new KeyValuePair<string, string>("last_read", reader.SerialNumber.ToString().Replace(" ", "")));
                 var content = new FormUrlEncodedContent(values);
 
                 var response = await client.PostAsync("http://178.62.34.201/phpDatabase/db_createTagEntry.php", content);
-
                 var responseString = await response.Content.ReadAsStringAsync();
-                Request_Status_Info.Text = responseString;
-                System.Windows.MessageBox.Show(responseString);
+                JObject o = JObject.Parse(responseString);
+                String personStatus = (String) o["reply_reader"]["status"];
+                String tagStatus = (String)o["reply_tag"]["status"];
+                if (personStatus.Equals("error") && tagStatus.Equals("error"))
+                {
+                    System.Windows.MessageBox.Show("Failed to register user.\nPossible cause: Passport number already exists.");
+                    Request_Status_Info.Foreground = Brushes.Red;
+                    Request_Status_Info.Text = "Error";
+                }
+                else if (personStatus.Equals("error"))
+                {
+                    System.Windows.MessageBox.Show("Failed to register user.\nPossible cause: Passport number already exists.");
+                    Request_Status_Info.Foreground = Brushes.Red;
+                    Request_Status_Info.Text = "Error";
+                }
+                else if(tagStatus.Equals("error"))
+                {
+                    System.Windows.MessageBox.Show("Failed to register user.\nPossible cause: Tag is already assigned to another active user.");
+                    Request_Status_Info.Foreground = Brushes.Red;
+                    Request_Status_Info.Text = "Error";
+                }
+                else
+                {
+                    Request_Status_Info.Foreground = Brushes.Green;
+                    Request_Status_Info.Text = "Success";
+                }
             }
         }
 
